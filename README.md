@@ -1,7 +1,6 @@
 # movies-explorer-api
 
 ## ссылка на api
-
 https://api.andrei.nomoredomains.rocks
 
 ## Запуск проекта
