@@ -1,24 +1,29 @@
 const jwt = require('jsonwebtoken');
 const UnauthorizedError = require('../errros/UnauthorizedError');
 
-const extractBearerToken = (header) => header.replace('Bearer ', '');
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
+  const { authorization } = req.headers;
+
+  if (!authorization || !authorization.startsWith('Bearer ')) {
+    next(new UnauthorizedError('You need to log in'));
+    return;
+  }
+
+  const token = authorization.replace('Bearer ', '');
+  let payload;
+
   try {
-    const { authorization } = req.headers;
-
-    if (!authorization || !authorization.startsWith('Bearer ')) {
-      next(new UnauthorizedError('You need to log in'));
-      return;
-    }
-
-    const token = extractBearerToken(authorization);
-    const payload = jwt.verify(token, 'gen');
-
-    req.user = payload;
+    payload = jwt.verify(
+      token,
+      NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
+    );
   } catch (err) {
     next(new UnauthorizedError('You need to log in'));
     return;
   }
+
+  req.user = payload;
   next();
 };

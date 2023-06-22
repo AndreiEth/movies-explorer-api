@@ -21,8 +21,8 @@ module.exports.getUser = (req, res, next) => {
 module.exports.updateUser = (req, res, next) => {
   const { email, name } = req.body;
 
-  userSchema
-    .findByIdAndUpdate(
+  try {
+    const user = userSchema.findByIdAndUpdate(
       req.user._id,
       {
         email,
@@ -32,20 +32,14 @@ module.exports.updateUser = (req, res, next) => {
         new: true,
         runValidators: true,
       },
-    )
-    .then((user) => {
-      if (!user) {
-        throw new NotFoundError('User not found');
-      }
-      res.status(200).send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new BadRequestError('Incorrect data'));
-      } else {
-        next(err);
-      }
-    });
+    );
+    if (!user) {
+      throw new NotFoundError('User not found');
+    }
+    res.status(200).send(user);
+  } catch (err) {
+    next(err);
+  }
 };
 
 module.exports.login = (req, res, next) => {
