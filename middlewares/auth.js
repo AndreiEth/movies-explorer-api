@@ -1,13 +1,13 @@
 const jwt = require('jsonwebtoken');
-const UnauthorizedError = require('../errros/UnauthorizedError');
+const UnAuthorizedError = require('../errors/UnAuthorizedError');
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
-module.exports = (req, res, next) => {
+module.exports.auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer ')) {
-    next(new UnauthorizedError('You need to log in'));
+    next(new UnAuthorizedError('Необходима авторизация'));
     return;
   }
 
@@ -20,7 +20,7 @@ module.exports = (req, res, next) => {
       NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret',
     );
   } catch (err) {
-    next(new UnauthorizedError('You need to log in'));
+    next(new UnAuthorizedError('Необходима авторизация'));
     return;
   }
 
