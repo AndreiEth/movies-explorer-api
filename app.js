@@ -27,8 +27,8 @@ app.use((error, req, res, next) => {
   res.status(status).send({
     message:
       status === 500
-        ? `На сервере произошла ошибка${message}`
-        : `На сервере произошла ошибка${message}`,
+        ? `${message}`
+        : `${message}`,
   });
   next();
 });
