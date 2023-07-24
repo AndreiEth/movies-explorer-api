@@ -1,5 +1,5 @@
-const mongoUrl = 'mongodb://localhost:27017/moviesdb';
-const port = 3002;
+const mongoUrl = 'mongodb://127.0.0.1:27017/bitfilmsdb';
+const port = 3000;
 const devSecret = 'dev-secret';
 
 module.exports = {
