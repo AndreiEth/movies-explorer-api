@@ -1,6 +1,6 @@
 const mongoUrl = 'mongodb://127.0.0.1:27017/bitfilmsdb';
-const port = 3000;
 const devSecret = 'dev-secret';
+const port = 3003;
 
 module.exports = {
   mongoUrl,
